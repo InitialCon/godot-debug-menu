@@ -78,6 +78,12 @@ var frametime_gpu_avg := GRAPH_MIN_FRAMETIME
 var frames_per_second := float(GRAPH_MIN_FPS)
 var frame_time_gradient := Gradient.new()
 
+var ssao_quality = ProjectSettings.get_setting("rendering/environment/ssao/quality") #For now we need to update this manually but hopefully in the future the getter for this function will be exposed#
+var ssil_quality = ProjectSettings.get_setting("rendering/environment/ssao/quality") #For now we need to update this manually but hopefully in the future the getter for this function will be exposed#
+var volumetric_fog_size = ProjectSettings.get_setting("rendering/environment/volumetric_fog/volume_size") #For now we need to update this manually but hopefully in the future the getter for this function will be exposed#
+var volumetric_fog_depth = ProjectSettings.get_setting("rendering/environment/volumetric_fog/volume_depth") #For now we need to update this manually but hopefully in the future the getter for this function will be exposed#
+var is_volumetric_fog_filtered = ProjectSettings.get_setting("rendering/environment/volumetric_fog/use_filter") #For now we need to update this manually but hopefully in the future the getter for this function will be exposed#
+
 func _init() -> void:
 	# This must be done here instead of `_ready()` to avoid having `visibility_changed` be emitted immediately.
 	visible = false
@@ -192,18 +198,40 @@ func update_settings_label() -> void:
 			settings.text += "\nSSR: %d Steps" % environment.ssr_max_steps
 
 		if environment.ssao_enabled:
-			settings.text += "\nSSAO: On"
+			var quality = "Very Low"
+			if ssao_quality == RenderingServer.ENV_SSAO_QUALITY_LOW:
+				quality = "Low"
+			elif ssao_quality == RenderingServer.ENV_SSAO_QUALITY_MEDIUM:
+				quality = "Medium"
+			elif ssao_quality == RenderingServer.ENV_SSAO_QUALITY_HIGH:
+				quality = "High"
+			settings.text += "\nSSAO: " + quality
+		
 		if environment.ssil_enabled:
-			settings.text += "\nSSIL: On"
-
+			var quality = "Very Low"
+			if ssil_quality == RenderingServer.ENV_SSIL_QUALITY_LOW:
+				quality = "Low"
+			elif ssil_quality == RenderingServer.ENV_SSIL_QUALITY_MEDIUM:
+				quality = "Medium"
+			elif ssil_quality == RenderingServer.ENV_SSIL_QUALITY_HIGH:
+				quality = "High"
+			settings.text += "\nSSIL: " + quality
+		
 		if environment.sdfgi_enabled:
 			settings.text += "\nSDFGI: %d Cascades" % environment.sdfgi_cascades
-
+		
 		if environment.glow_enabled:
-			settings.text += "\nGlow: On"
-
+			var quality = "Linear"
+			if ProjectSettings.get_setting("rendering/environment/glow/upscale_mode") == 1:
+				quality = "Bicubic"
+			settings.text += "\nGlow: " + quality
+		
 		if environment.volumetric_fog_enabled:
-			settings.text += "\nVolumetric Fog: On"
+			if is_volumetric_fog_filtered:
+				settings.text += "\nVolumetric Fog: Filtered, " + "Size = " + str(volumetric_fog_size) + ", Depth = " + str(volumetric_fog_depth)
+			else:
+				settings.text += "\nVolumetric Fog: Unfiltered, " + "Size = " + str(volumetric_fog_size) + ", Depth = " + str(volumetric_fog_depth)
+		
 	var antialiasing_2d_string := ""
 	if viewport.msaa_2d >= Viewport.MSAA_2X:
 		antialiasing_2d_string = "%d× MSAA" % pow(2, viewport.msaa_2d)

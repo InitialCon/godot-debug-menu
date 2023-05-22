@@ -6,12 +6,9 @@
 Can be used when running from the editor and in exported projects.
 Inspired by id Tech 6/7's performance overlay.
 
-This repository only contains the add-on. See
-[godot-extended-libraries/godot-debug-menu-demo](https://github.com/godot-extended-libraries/godot-debug-menu-demo)
-for the demonstration project.
-
 ## Features
 
+- Custom fork that displays the currently selected quality settings for various effects.
 - Features compact and full display modes, with the compact mode only displaying
   FPS, frametime and framerate cap.
 - Displays FPS, frametime, CPU time and GPU time graphs with a summary of the
@@ -95,32 +92,6 @@ You can find detailed guidance on optimizing a project's performance in the
 [documentation](https://docs.godotengine.org/en/stable/tutorials/performance/index.html).
 
 ## Installation
-
-### Using the Asset Library
-
-- Open the Godot editor.
-- Navigate to the **AssetLib** tab at the top of the editor and search for
-  "debug menu".
-- Install the
-  [*Debug Menu*](https://godotengine.org/asset-library/asset/1902)
-  plugin. Keep all files checked during installation.
-- In the editor, open **Project > Project Settings**, go to **Plugins**
-  and enable the **Debug Menu** plugin.
-
-### Manual installation
-
-Manual installation lets you use pre-release versions of this add-on by
-following its `master` branch.
-
-- Clone this Git repository:
-
-```bash
-git clone https://github.com/godot-extended-libraries/godot-debug-menu.git
-```
-
-Alternatively, you can
-[download a ZIP archive](https://github.com/godot-extended-libraries/godot-debug-menu/archive/master.zip)
-if you do not have Git installed.
 
 - Move the `addons/` folder to your project folder.
 - In the editor, open **Project > Project Settings**, go to **Plugins**
